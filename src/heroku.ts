@@ -16,7 +16,7 @@ function releaseContainer() {
 function runCommandWithApp(command: string, ...args: string[]) {
   const app = getApplicationName();
   if (app && app !== "") {
-    args.concat("-a", app);
+    args = args.concat("-a", app);
   }
 
   runCommand(command, ...args);
