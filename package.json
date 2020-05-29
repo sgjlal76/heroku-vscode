@@ -2,6 +2,14 @@
 	"name": "heroku-vscode",
 	"displayName": "Proper Heroku Tooling",
 	"description": "Heroku utilities for VS Code",
+	"publisher": "manzanit0",
+	"author": {
+		"name": "Javier García",
+		"email": "jgmanzano@pm.com"
+	},
+	"repository": {
+		"url": "https://github.com/Manzanit0/heroku-vscode"
+	},
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.45.0"
