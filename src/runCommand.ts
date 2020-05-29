@@ -1,11 +1,17 @@
-import { window } from "vscode";
+import { window, workspace } from "vscode";
 import { spawn } from "child_process";
 
 export default function runCommand(command: string, ...args: string[]): void {
   const channel = window.createOutputChannel("Heroku Extension");
   channel.show();
 
-  const make = spawn(command, args);
+  const dir = getTopLevelDirectory();
+  if (!dir) {
+    window.showErrorMessage("unable to run command: no workspace open.");
+    return;
+  }
+
+  const make = spawn(command, args, { cwd: dir });
 
   make.stdout.on("data", (data: any) => {
     channel.append(`${data}`);
@@ -22,4 +28,13 @@ export default function runCommand(command: string, ...args: string[]): void {
   make.on("close", (code: any) => {
     window.showInformationMessage(`Finished with code ${code}`);
   });
+}
+
+function getTopLevelDirectory(): string | undefined {
+  const wsFolders = workspace.workspaceFolders;
+  if (!wsFolders || !wsFolders[0]) {
+    return;
+  }
+
+  return wsFolders[0].uri.fsPath;
 }
