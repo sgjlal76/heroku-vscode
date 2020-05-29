@@ -1,0 +1,70 @@
+{
+	"name": "heroku-vscode",
+	"displayName": "Proper Heroku Tooling",
+	"description": "Heroku utilities for VS Code",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.45.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "heroku-vscode.configure",
+				"title": "Heroku: Configure Application"
+			},
+			{
+				"command": "heroku-vscode.openApplication",
+				"title": "Heroku: Open"
+			},
+			{
+				"command": "heroku-vscode.containerPush",
+				"title": "Heroku: Push Container"
+			},
+			{
+				"command": "heroku-vscode.containerRelease",
+				"title": "Heroku: Release Container"
+			}
+		],
+		"configuration": [
+			{
+				"title": "Heroku",
+				"properties": {
+					"heroku-vscode.applicationName": {
+						"type": "string",
+						"default": "",
+						"description": "Application name",
+						"scope": "window"
+					}
+				}
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"lint": "eslint src --ext ts",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.45.0",
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^7.0.2",
+		"@types/node": "^13.11.0",
+		"eslint": "^6.8.0",
+		"@typescript-eslint/parser": "^2.30.0",
+		"@typescript-eslint/eslint-plugin": "^2.30.0",
+		"glob": "^7.1.6",
+		"mocha": "^7.1.2",
+		"typescript": "^3.8.3",
+		"vscode-test": "^1.3.0"
+	}
+}
