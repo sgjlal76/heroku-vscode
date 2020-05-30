@@ -10,7 +10,7 @@ function pushContainer() {
 }
 
 function releaseContainer() {
-  runCommandWithApp("heroku", "release:push", "web");
+  runCommandWithApp("heroku", "container:release", "web");
 }
 
 function runCommandWithApp(command: string, ...args: string[]) {
