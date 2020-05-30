@@ -1,6 +1,6 @@
 import { getApplicationName } from "./configuration";
 import { runCmdWithOutput, runCmdSilently } from "./runCommand";
-import { window } from "vscode";
+import { window, workspace } from "vscode";
 
 export async function open() {
   try {
@@ -45,11 +45,31 @@ export async function releaseContainer() {
   }
 }
 
+export async function tailLogs() {
+  // The reasoning behind why the logs are being run in the terminal instead of
+  // an output channel is that running it asynchronously in an output channel
+  // complicated the problem by having to code a way to stop the tailing, or
+  // otherwise leaking the spawned process. Simple works for now.
+  //
+  // An additional benefit is that the terminal has colouring out of the box,
+  // but output channels do not.
+  runInTerminal("heroku", "logs", "--tail");
+}
+
 function runForDefaultApp(command: string, ...args: string[]) {
   return runCmdWithOutput(command, ...withApplicationFlag(args));
 }
 
 function runForDefaultAppSilently(command: string, ...args: string[]) {
+  return runCmdSilently(command, ...withApplicationFlag(args));
+}
+
+function runInTerminal(command: string, ...args: string[]) {
+  const term = window.createTerminal();
+  term.show(false);
+
+  var joinedArgs = withApplicationFlag(args).join(" ");
+  term.sendText(`${command} ${joinedArgs}`);
   return runCmdSilently(command, ...withApplicationFlag(args));
 }
 

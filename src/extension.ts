@@ -9,6 +9,7 @@ const comms: { [k: string]: (...args: any[]) => any } = {
   "heroku-vscode.containerPush": heroku.pushContainer,
   "heroku-vscode.containerRelease": heroku.releaseContainer,
   "heroku-vscode.containerDeploy": heroku.deployContainer,
+  "heroku-vscode.logs": heroku.tailLogs,
 };
 
 export function activate(context: ExtensionContext) {

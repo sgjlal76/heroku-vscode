@@ -42,6 +42,10 @@
 			{
 				"command": "heroku-vscode.containerDeploy",
 				"title": "Heroku: Deploy Container"
+			},
+			{
+				"command": "heroku-vscode.logs",
+				"title": "Heroku: Logs"
 			}
 		],
 		"configuration": [
