@@ -38,6 +38,10 @@
 			{
 				"command": "heroku-vscode.containerRelease",
 				"title": "Heroku: Release Container"
+			},
+			{
+				"command": "heroku-vscode.containerDeploy",
+				"title": "Heroku: Deploy Container"
 			}
 		],
 		"configuration": [
