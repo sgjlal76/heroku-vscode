@@ -4,6 +4,9 @@ An attempt to provide proper Heroku tooling for VS Code
 
 ## Features
 
+Note: Upon installation of the extension, it will attempt to install the
+official Heroku CLI if it does not exist.
+
 ### Commands
 
 - `Heroku: Configure Application` allows you to set a default application name per workspace.
@@ -24,10 +27,9 @@ Still WIP. Probably many,
 - Search recursively until the first Dockerfile is found. This should avoid
   failing in projects which are in nested directories
 - Enable deployments via push to `heroku master`
-- Open Heroku admin panel
 - Login to Heroku
-- Install CLI
 
 ### Maybe
 
 - Detect if the project has a Procfile, or it's _Dockerised_, and release accordingly.
+- Open Heroku admin panel
