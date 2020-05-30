@@ -18,11 +18,13 @@ export default function runCommand(command: string, ...args: string[]): void {
   });
 
   make.stderr.on("data", (data: any) => {
-    channel.append(`${data}`);
+    // Heroku uses stderr for out of band information... which is very spammy.
+    // https://devcenter.heroku.com/articles/cli-style-guide#stdout-stderr
+    console.log(`${data}`);
   });
 
   make.on("error", (error: any) => {
-    channel.append(`${error}`);
+    channel.append(`[ERROR] ${error}`);
   });
 
   make.on("close", (code: any) => {
