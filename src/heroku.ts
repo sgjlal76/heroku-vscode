@@ -1,25 +1,30 @@
 import { getApplicationName } from "./configuration";
-import runCommand from "./runCommand";
+import { runCmdWithOutput, runCmdSilently } from "./runCommand";
 
-function open() {
-  runCommandWithApp("heroku", "open");
+export function open() {
+  runForDefaultAppSilently("heroku", "open");
 }
 
-function pushContainer() {
-  runCommandWithApp("heroku", "container:push", "web");
+export function pushContainer() {
+  runForDefaultApp("heroku", "container:push", "web");
 }
 
-function releaseContainer() {
-  runCommandWithApp("heroku", "container:release", "web");
+export function releaseContainer() {
+  runForDefaultAppSilently("heroku", "container:release", "web");
 }
 
-function runCommandWithApp(command: string, ...args: string[]) {
+function runForDefaultApp(command: string, ...args: string[]) {
+  runCmdWithOutput(command, ...withApplicationFlag(args));
+}
+
+function runForDefaultAppSilently(command: string, ...args: string[]) {
+  runCmdSilently(command, ...withApplicationFlag(args));
+}
+
+function withApplicationFlag(args: string[]) {
   const app = getApplicationName();
   if (app && app !== "") {
     args = args.concat("-a", app);
   }
-
-  runCommand(command, ...args);
+  return args;
 }
-
-export { open, pushContainer, releaseContainer};

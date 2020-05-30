@@ -1,34 +1,49 @@
 import { window, workspace } from "vscode";
 import { spawn } from "child_process";
 
-export default function runCommand(command: string, ...args: string[]): void {
+export function runCmdSilently(command: string, ...args: string[]): void {
+  runCmd(console.log, command, ...args);
+}
+
+export function runCmdWithOutput(command: string, ...args: string[]): void {
   const channel = window.createOutputChannel("Heroku Extension");
   channel.show();
 
+  const print = (data: string) => channel.append(data);
+  runCmd(print, command, ...args);
+}
+
+type PrintFn = (data: string) => void;
+
+function runCmd(print: PrintFn, cmd: string, ...args: string[]): void {
   const dir = getTopLevelDirectory();
   if (!dir) {
     window.showErrorMessage("unable to run command: no workspace open.");
     return;
   }
 
-  const make = spawn(command, args, { cwd: dir });
+  const c = spawn(cmd, args, { cwd: dir });
 
-  make.stdout.on("data", (data: any) => {
-    channel.append(`${data}`);
+  c.stdout.on("data", (data: any) => {
+    print(`${data}`);
   });
 
-  make.stderr.on("data", (data: any) => {
+  c.stderr.on("data", (data: any) => {
     // Heroku uses stderr for out of band information... which is very spammy.
     // https://devcenter.heroku.com/articles/cli-style-guide#stdout-stderr
     console.log(`${data}`);
   });
 
-  make.on("error", (error: any) => {
-    channel.append(`[ERROR] ${error}`);
+  c.on("error", (error: any) => {
+    print(`[ERROR] ${error}`);
   });
 
-  make.on("close", (code: any) => {
-    window.showInformationMessage(`Finished with code ${code}`);
+  c.on("close", (code: number) => {
+    if (code === 0) {
+      window.showInformationMessage(`command run successfuly`);
+    } else {
+      window.showWarningMessage(`command finished with code ${code}`);
+    }
   });
 }
 
