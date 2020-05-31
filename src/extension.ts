@@ -1,7 +1,6 @@
 import { commands, ExtensionContext } from "vscode";
 import { requestApplicationName } from "./configuration";
 import * as heroku from "./heroku";
-import setup from "./setup";
 
 // Map<string, function>
 const comms: { [k: string]: (...args: any[]) => any } = {
@@ -11,11 +10,10 @@ const comms: { [k: string]: (...args: any[]) => any } = {
   "heroku-vscode.containerRelease": heroku.releaseContainer,
   "heroku-vscode.containerDeploy": heroku.deployContainer,
   "heroku-vscode.logs": heroku.tailLogs,
+  "heroku-vscode.setup": heroku.setup,
 };
 
 export function activate(context: ExtensionContext) {
-  setup();
-
   for (const k in comms) {
     if (comms.hasOwnProperty(k)) {
       const func = comms[k];

@@ -47,6 +47,10 @@
 			{
 				"command": "heroku-vscode.logs",
 				"title": "Heroku: Logs"
+			},
+			{
+				"command": "heroku-vscode.setup",
+				"title": "Heroku: Setup"
 			}
 		],
 		"configuration": [

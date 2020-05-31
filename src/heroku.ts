@@ -1,8 +1,32 @@
 import { getApplicationName } from "./configuration";
 import { runCmdWithOutput, runCmdSilently } from "./runCommand";
 import { window, workspace } from "vscode";
+import { execSync } from "child_process";
+
+export function setup() {
+  if (!herokuCLIExists()) {
+    if (isUnix()) {
+      const term = window.createTerminal();
+      term.show(false);
+
+      // https://devcenter.heroku.com/articles/heroku-cli#other-installation-methods
+      term.sendText(
+        "curl https://cli-assets.heroku.com/install.sh | sh && heroku login",
+      );
+    } else {
+      window.showWarningMessage(
+        "Automatic setup is only available for Unix systems. Please download the Heroku CLI in order to be able to use the extension",
+      );
+    }
+  }
+}
 
 export async function open() {
+  if (!herokuCLIExists()) {
+    showMissingSetupMessage();
+    return;
+  }
+
   try {
     await runForDefaultAppSilently("heroku", "open");
     window.showInformationMessage("Successfully opened website");
@@ -12,6 +36,11 @@ export async function open() {
 }
 
 export async function deployContainer() {
+  if (!herokuCLIExists()) {
+    showMissingSetupMessage();
+    return;
+  }
+
   try {
     await runForDefaultApp("heroku", "container:push", "web");
     window.showInformationMessage(
@@ -26,6 +55,11 @@ export async function deployContainer() {
 }
 
 export async function pushContainer() {
+  if (!herokuCLIExists()) {
+    showMissingSetupMessage();
+    return;
+  }
+
   try {
     await runForDefaultApp("heroku", "container:push", "web");
     window.showInformationMessage(
@@ -37,6 +71,11 @@ export async function pushContainer() {
 }
 
 export async function releaseContainer() {
+  if (!herokuCLIExists()) {
+    showMissingSetupMessage();
+    return;
+  }
+
   try {
     await runForDefaultAppSilently("heroku", "container:release", "web");
     window.showInformationMessage("Successfully released container");
@@ -46,6 +85,11 @@ export async function releaseContainer() {
 }
 
 export async function tailLogs() {
+  if (!herokuCLIExists()) {
+    showMissingSetupMessage();
+    return;
+  }
+
   // The reasoning behind why the logs are being run in the terminal instead of
   // an output channel is that running it asynchronously in an output channel
   // complicated the problem by having to code a way to stop the tailing, or
@@ -79,4 +123,40 @@ function withApplicationFlag(args: string[]) {
     args = args.concat("-a", app);
   }
   return args;
+}
+
+function herokuCLIExists() {
+  try {
+    execSync("heroku -v");
+  } catch (error) {
+    console.log(`error checking heroku CLI version ${error}`);
+    return false;
+  }
+
+  return true;
+}
+
+function showMissingSetupMessage() {
+  window.showWarningMessage(
+    "Please setup Heroku CLI manually or run 'Heroku: Setup' before running this command",
+  );
+}
+
+function isUnix() {
+  let os: string | null;
+
+  try {
+    os = execSync("uname").toString().trim();
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+
+  switch (os) {
+    case "Darwin":
+    case "Linux":
+      return true;
+    default:
+      return false;
+  }
 }

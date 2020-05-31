@@ -17,20 +17,22 @@ embrace the _idiomatic_ way of working in VS Code.
 
 ## Features
 
-**Note:** Upon installation of the extension, it will attempt to install the
-official Heroku CLI if it does not exist.
+Before being able to run any of the relevant commands, the Heroku CLI must be
+installed and an session authorised. You can do this via the command `Heroku:
+Setup`.
 
-**Note 2:** If you run Windows, please make sure to install the CLI
-*separately. You can find the installer [here][0].
+**Note:** If you run Windows, please make sure to install the CLI separately,
+the Setup command won't work. You can find the installer [here][0].
 
 ### Commands
 
+- `Heroku: Setup`, Download and installs the Heroku CLI, and prompts to log in.
 - `Heroku: Configure Application` allows you to set a default application name per workspace.
-- `Heroku: Push Container`, pushes the **web** container
-- `Heroku: Release Container`, releases the **web** container
-- `Heroku: Deploy Container`, shorthand to both push AND release the **web** container
-- `Heroku: Open`, opens the app
-- `Heroku: Logs`, tails the logs in a new terminal
+- `Heroku: Push Container`, pushes the **web** container.
+- `Heroku: Release Container`, releases the **web** container.
+- `Heroku: Deploy Container`, shorthand to both push AND release the **web** container.
+- `Heroku: Open`, opens the app.
+- `Heroku: Logs`, tails the logs in a new terminal.
 
 ## Known Issues
 
