@@ -42,5 +42,6 @@ Probably many. Log an issue in the repository, let's fix it together :)
 
 - Support `Procfile` projects
 - Allow user to configure `Dockerfile` to deploy if its not in the root directory
+- Add support for _worker_ dynos too.
 
 [0]: https://devcenter.heroku.com/articles/heroku-cli#download-and-install
