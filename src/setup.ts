@@ -1,15 +1,41 @@
 import { window } from "vscode";
-import { runCmdWithOutput } from "./runCommand";
+import { runCmdSilently } from "./runCommand";
+import { execSync } from "child_process";
 
 export default async function setup() {
   if (!herokuCLIExists()) {
-    installHerokuCLI();
+    if (isUnix()) {
+      installHerokuCLI();
+    } else {
+      window.showWarningMessage(
+        "Please download the Heroku CLI in order to be able to use the extension",
+      );
+    }
+  }
+}
+
+async function isUnix() {
+  let os: string | null;
+
+  try {
+    os = execSync("uname").toString().trim();
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+
+  switch (os) {
+    case "Darwin":
+    case "Linux":
+      return true;
+    default:
+      return false;
   }
 }
 
 async function herokuCLIExists() {
   try {
-    await runCmdWithOutput("heroku", "-v");
+    await runCmdSilently("heroku", "-v");
     return true;
   } catch (error) {
     return false;

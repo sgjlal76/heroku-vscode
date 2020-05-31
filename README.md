@@ -7,6 +7,10 @@ An attempt to provide proper Heroku tooling for VS Code
 Note: Upon installation of the extension, it will attempt to install the
 official Heroku CLI if it does not exist.
 
+Note 2: If you run Windows, please make sure to install the CLI separately.
+You can find the installer
+[here](https://devcenter.heroku.com/articles/heroku-cli#download-and-install)
+
 ### Commands
 
 - `Heroku: Configure Application` allows you to set a default application name per workspace.
