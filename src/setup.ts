@@ -33,13 +33,15 @@ async function isUnix() {
   }
 }
 
-async function herokuCLIExists() {
+function herokuCLIExists() {
   try {
-    await runCmdSilently("heroku", "-v");
-    return true;
+    execSync("heroku -v");
   } catch (error) {
+    console.log(`error checking heroku CLI version ${error}`);
     return false;
   }
+
+  return true;
 }
 
 function installHerokuCLI() {
@@ -47,5 +49,7 @@ function installHerokuCLI() {
   term.show(false);
 
   // https://devcenter.heroku.com/articles/heroku-cli#other-installation-methods
-  term.sendText("curl https://cli-assets.heroku.com/install.sh | sh");
+  term.sendText(
+    "curl https://cli-assets.heroku.com/install.sh | sh && heroku login",
+  );
 }
