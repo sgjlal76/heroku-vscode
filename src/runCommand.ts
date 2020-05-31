@@ -28,10 +28,15 @@ function runCmd(print: PrintFn, cmd: string, ...args: string[]) {
       print(`${data}`);
     });
 
+    let lastReportedData = "";
     c.stderr.on("data", (data: any) => {
       // Heroku uses stderr for out of band information... which is very spammy.
       // https://devcenter.heroku.com/articles/cli-style-guide#stdout-stderr
       console.log(`${data}`);
+
+      // Keep the last printed data in order to be able to report a
+      // recognisable error.
+      lastReportedData = `${data}`;
     });
 
     c.on("error", (error: any) => {
@@ -42,7 +47,8 @@ function runCmd(print: PrintFn, cmd: string, ...args: string[]) {
       if (code === 0) {
         resolve("command run successfuly");
       } else {
-        reject(`command finished with code ${code}`);
+        const errorMessage = toRecognisableError(lastReportedData);
+        reject(`finished with code ${code}: ${errorMessage}`);
       }
     });
   });
@@ -57,4 +63,19 @@ function getTopLevelDirectory(): string | undefined {
   return wsFolders[0].uri.fsPath;
 }
 
+function toRecognisableError(content: string) {
+  if (content.includes("Missing required flag")) {
+    return "missing default application in configuration. Run 'Heroku: Configure Application'";
+  } else if (
+    content.includes("couldn't find that app") || content.includes("404")
+  ) {
+    return "can't find application configured. Reconfigure it with 'Heroku: Configure Application'";
+  } else if (content.includes("ENOTFOUND")) {
+    return "network unavailable";
+  }
+
+  // Not desirable error message, but eventually users will bring it up,
+  // enabling us to fix it.
+  return content;
+}
 export { runCmdSilently, runCmdWithOutput };
