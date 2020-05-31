@@ -1,7 +1,8 @@
 {
 	"name": "heroku-vscode",
 	"displayName": "Proper Heroku Tooling",
-	"description": "Heroku utilities for VS Code",
+	"description": "Automates the right things for working with Heroku.",
+	"icon": "heroku-logo.png",
 	"publisher": "manzanit0",
 	"author": {
 		"name": "Javier García",

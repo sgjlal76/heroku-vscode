@@ -1,15 +1,27 @@
 # Heroku Tooling for VS Code
 
-An attempt to provide proper Heroku tooling for VS Code
+An attempt to provide proper Heroku tooling for VS Code.
+
+## What is this and why?
+
+TLDR: adds VSC commands to make working with containerised apps a breeze. It
+also takes care of Heroku CLI installation/login to remove friction.
+
+This extension **does not** attempt to replace the Heroku CLI for interacting
+with Heroku. It is a top-notch CLI and for most things it makes sense to use
+it.
+
+What this extension **does** attempt is to wrap the most relevant commands
+from the CLI in my development workflow to VS Code commands in order to
+embrace the _idiomatic_ way of working in VS Code.
 
 ## Features
 
-Note: Upon installation of the extension, it will attempt to install the
+**Note:** Upon installation of the extension, it will attempt to install the
 official Heroku CLI if it does not exist.
 
-Note 2: If you run Windows, please make sure to install the CLI separately.
-You can find the installer
-[here](https://devcenter.heroku.com/articles/heroku-cli#download-and-install)
+**Note 2:** If you run Windows, please make sure to install the CLI
+*separately. You can find the installer [here][0].
 
 ### Commands
 
@@ -22,18 +34,12 @@ You can find the installer
 
 ## Known Issues
 
-Still WIP. Probably many,
+Probably many. Log an issue in the repository, let's fix it together :)
 
 ## TODO
 
-## For sure
-
-- Search recursively until the first Dockerfile is found. This should avoid
-  failing in projects which are in nested directories
-- Enable deployments via push to `heroku master`
+- Support `Procfile` projects
+- Allow user to configure `Dockerfile` to deploy if its not in the root directory
 - Login to Heroku
 
-### Maybe
-
-- Detect if the project has a Procfile, or it's _Dockerised_, and release accordingly.
-- Open Heroku admin panel
+[0]: https://devcenter.heroku.com/articles/heroku-cli#download-and-install
